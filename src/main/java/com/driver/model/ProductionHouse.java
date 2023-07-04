@@ -22,6 +22,7 @@ public class ProductionHouse {
 
     public ProductionHouse(String name) {
         this.name = name;
+        this.ratings=0;
         this.webSeriesList = new ArrayList<>();
     }
 
@@ -53,7 +54,12 @@ public class ProductionHouse {
     }
 
     public double getRatings() {
-        return ratings;
+        double sum=0;
+        for (WebSeries webSeries:webSeriesList){
+            sum+=webSeries.getRating();
+        }
+
+        return sum/webSeriesList.size();
     }
 
     public void setRatings(double ratings) {
