@@ -26,7 +26,7 @@ public class WebSeriesService {
         //Don't forget to save the production and webseries Repo
 
        WebSeries webSeries= webSeriesRepository.findBySeriesName(webSeriesEntryDto.getSeriesName());
-        if (webSeries==null){
+        if (webSeries!=null){
             throw new Exception("Series is already present");
         }
 
