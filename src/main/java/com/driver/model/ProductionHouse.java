@@ -54,15 +54,11 @@ public class ProductionHouse {
     }
 
     public double getRatings() {
-        double sum=0;
-        for (WebSeries webSeries:webSeriesList){
-            sum+=webSeries.getRating();
-        }
 
-        return sum/webSeriesList.size();
+        return ratings/webSeriesList.size();
     }
 
     public void setRatings(double ratings) {
-        this.ratings = ratings;
+        this.ratings+=ratings;
     }
 }
