@@ -32,27 +32,24 @@ public class SubscriptionService {
 
 
         Subscription subscription= new Subscription();
+        subscription.setSubscriptionType(subscriptionEntryDto.getSubscriptionType());
 
-        if(subscriptionEntryDto.getSubscriptionType().equals(SubscriptionType.BASIC)){
+        if(subscriptionEntryDto.getSubscriptionType().toString().equals("BASIC")){
             Integer amountWithNoOfScreenAmount=500+(200*numberOfScreen);
             totalAmount=amountWithNoOfScreenAmount;
-            subscription.setSubscriptionType(SubscriptionType.BASIC);
 
-        } else if (subscriptionEntryDto.getSubscriptionType().equals(SubscriptionType.PRO)) {
+        } else if (subscriptionEntryDto.getSubscriptionType().toString().equals("PRO")) {
             Integer amountWithNoOfScreenAmount=800+(250*numberOfScreen);
             totalAmount=amountWithNoOfScreenAmount;
-            subscription.setSubscriptionType(SubscriptionType.PRO);
 
         }else {
             Integer amountWithNoOfScreenAmount=1000+(350*numberOfScreen);
             totalAmount=amountWithNoOfScreenAmount;
-            subscription.setSubscriptionType(SubscriptionType.ELITE);
         }
 
         subscription.setUser(user);
         subscription.setTotalAmountPaid(totalAmount);
         subscription.setNoOfScreensSubscribed(numberOfScreen);
-        subscription=subscriptionRepository.save(subscription);
 
         user.setSubscription(subscription);
 
@@ -71,19 +68,20 @@ public class SubscriptionService {
 
         Subscription subscription=user.getSubscription();
         Integer previousFair=subscription.getTotalAmountPaid();
-
+        Integer currentFair;
         if(subscription.getSubscriptionType().equals(SubscriptionType.BASIC)){
             subscription.setSubscriptionType(SubscriptionType.PRO);
-            Integer currentFair=previousFair+300+(50*subscription.getNoOfScreensSubscribed());
-            subscription.setTotalAmountPaid(currentFair);
+            currentFair =previousFair+300+(50*subscription.getNoOfScreensSubscribed());
         }else {
             subscription.setSubscriptionType(SubscriptionType.ELITE);
-            Integer currentFair=previousFair+200+(100*subscription.getNoOfScreensSubscribed());
-            subscription.setTotalAmountPaid(currentFair);
+            currentFair=previousFair+200+(100*subscription.getNoOfScreensSubscribed());
         }
+
+        subscription.setTotalAmountPaid(currentFair);
         user.setSubscription(subscription);
         subscriptionRepository.save(subscription);
-        return subscription.getTotalAmountPaid()-previousFair;
+
+        return currentFair-previousFair;
     }
 
     public Integer calculateTotalRevenueOfHotstar(){
